@@ -113,16 +113,11 @@ The following dependencies are used in this implementation:
 ## `/user/login` Endpoint
 
 ### Description
-
-This endpoint is used to authenticate an existing user. Upon successful authentication, it returns an authentication token and user details.
-
----
+This endpoint is used to register a new user.
 
 ### Endpoint
 
 `POST /user/login`
-
----
 
 ### Request Body
 
@@ -216,3 +211,140 @@ The following dependencies are used in this implementation:
 - `express-validator`: For input validation.
 - `bcryptjs`: For password hashing.
 - `jsonwebtoken`: For generating authentication tokens.
+
+<br>
+<br>
+
+## `/users/profile` Endpoint
+
+### Description
+
+Retrieves the profile information of the authenticated user.
+
+---
+
+### Endpoint
+
+`GET /users/profile`
+
+---
+
+### Authentication
+
+Requires a valid JWT token sent via:
+
+- **Cookie**: `token={JWT_TOKEN}`
+- **Header**: `Authorization: Bearer {JWT_TOKEN}`
+
+---
+
+### Response
+
+#### Status Codes
+
+- **200 OK**: Successfully retrieved user profile.
+- **401 Unauthorized**: Missing or invalid authentication token.
+- **404 Not Found**: User not found.
+
+#### Example Successful Response (200)
+
+```json
+{
+    "_id": "64f8e5c4b78e410001c8ed9d",
+    "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+}
+```
+
+#### Example Error Response (401)
+
+```json
+{
+    "message": "Missing or invalid authentication token"
+}
+```
+
+#### Example Error Response (404)
+
+```json
+{
+    "message": "User not found"
+}
+```
+
+### Implementation Notes
+
+The endpoint:
+
+- Validates the JWT token.
+- Retrieves the user profile from the database.
+
+### Dependencies
+
+The following dependencies are used in this implementation:
+
+- `jsonwebtoken`: For validating authentication tokens.
+
+<br>
+<br>
+
+## `/user/logout` Endpoint
+
+### Description
+
+Logs out the authenticated user by clearing the authentication token.
+
+---
+
+### Endpoint
+
+`POST /user/logout`
+
+---
+
+### Authentication
+
+Requires a valid JWT token sent via:
+
+- **Cookie**: `token={JWT_TOKEN}`
+- **Header**: `Authorization: Bearer {JWT_TOKEN}`
+
+---
+
+### Response
+
+#### Status Codes
+
+- **200 OK**: Successfully logged out.
+- **401 Unauthorized**: Missing or invalid authentication token.
+
+#### Example Successful Response (200)
+
+```json
+{
+    "message": "Successfully logged out"
+}
+```
+
+#### Example Error Response (401)
+
+```json
+{
+    "message": "Missing or invalid authentication token"
+}
+```
+
+### Implementation Notes
+
+The endpoint:
+
+- Clears the JWT token from the client.
+
+### Dependencies
+
+The following dependencies are used in this implementation:
+
+- `jsonwebtoken`: For validating authentication tokens.
